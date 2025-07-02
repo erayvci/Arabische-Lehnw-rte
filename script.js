@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     // SheetBest API URL'sini buraya ekleyin
-    const sheetBestUrl = "SHEETBEST_API_URL_HERE";
+    const sheetBestUrl = "https://api.sheetbest.com/sheets/e21cc39a-5fe1-4d31-8702-dbc1f89b285a";
     
     // DOM Elementleri
     const entriesContainer = document.getElementById('entriesContainer');
