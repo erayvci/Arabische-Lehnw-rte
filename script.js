@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', function() {
-    // SheetBest API endpoint (Nach der SheetBest-Integration aktualisieren)
+    // SheetBest API endpointinizi buraya yapıştırın
     const sheetBestUrl = "https://api.sheetbest.com/sheets/e21cc39a-5fe1-4d31-8702-dbc1f89b285a";
     
     const entriesContainer = document.getElementById('entriesContainer');
@@ -18,10 +18,10 @@ document.addEventListener('DOMContentLoaded', function() {
     let uniqueLingCats = new Set();
     let uniqueThemeCats = new Set();
     
-    // Daten laden
+    // Verileri yükle
     fetchData();
     
-    // Filter-Event-Listener
+    // Filtreleme event listener'ları
     searchInput.addEventListener('input', filterEntries);
     originFilter.addEventListener('change', filterEntries);
     lingFilter.addEventListener('change', filterEntries);
@@ -30,46 +30,63 @@ document.addEventListener('DOMContentLoaded', function() {
     
     async function fetchData() {
         try {
-            // Mit der tatsächlichen SheetBest API-URL ersetzen
             const response = await fetch(sheetBestUrl);
             const data = await response.json();
             
             allEntries = data.map(entry => ({
                 ...entry,
-                // Arabische Wörter markieren
-                processedContent: processArabicWords(entry['Inhalt'] || '')
+                processedContent: formatEntryContent(entry)
             }));
             
-            // Einzigartige Kategorien sammeln
             collectUniqueCategories();
-            
-            // Filteroptionen füllen
             populateFilterOptions();
-            
-            // Alle Einträge anzeigen
             filteredEntries = [...allEntries];
             displayEntries(filteredEntries);
             
             loadingElement.classList.add('d-none');
         } catch (error) {
-            console.error('Fehler beim Laden der Daten:', error);
+            console.error('Daten konnten nicht geladen werden:', error);
             loadingElement.innerHTML = `
                 <div class="alert alert-danger">
                     <i class="fas fa-exclamation-triangle me-2"></i>
-                    Beim Laden der Daten ist ein Fehler aufgetreten. Bitte versuchen Sie es später noch einmal.
+                    Fehler beim Laden der Daten. Bitte überprüfen Sie die API-URL.
                 </div>
             `;
         }
     }
     
-    function processArabicWords(content) {
-        // Regex für arabische Zeichen (Unicode-Bereich für Arabisch)
-        const arabicRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]+/g;
+    function formatEntryContent(entry) {
+        let content = '';
         
-        // Arabische Wörter mit span umschließen und spezielle Klasse hinzufügen
-        return content.replace(arabicRegex, match => 
-            `<span class="arabic-word">${match}</span>`
-        );
+        if (entry['Arabisches Wort']) {
+            content += `<p><strong>Arabisches Wort:</strong> <span class="arabic-word">${entry['Arabisches Wort']}</span></p>`;
+        }
+        
+        if (entry['Transkription']) {
+            content += `<p><strong>Transkription:</strong> ${entry['Transkription']}</p>`;
+        }
+        
+        if (entry['IPA']) {
+            content += `<p><strong>IPA:</strong> ${entry['IPA']}</p>`;
+        }
+        
+        if (entry['Bedeutung (Deutsch)']) {
+            content += `<p><strong>Bedeutung:</strong> ${entry['Bedeutung (Deutsch)']}</p>`;
+        }
+        
+        if (entry['Originalwort']) {
+            content += `<p><strong>Originalwort:</strong> ${entry['Originalwort']}</p>`;
+        }
+        
+        if (entry['Übernahmepfad']) {
+            content += `<p><strong>Übernahmepfad:</strong> ${entry['Übernahmepfad']}</p>`;
+        }
+        
+        if (entry['Historischer Kontext']) {
+            content += `<p><strong>Historischer Kontext:</strong> ${entry['Historischer Kontext']}</p>`;
+        }
+        
+        return content;
     }
     
     function collectUniqueCategories() {
@@ -91,7 +108,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     
     function populateFilterOptions() {
-        // Herkunftssprache Optionen
+        // Herkunftssprache seçenekleri
         const sortedOrigins = Array.from(uniqueOrigins).sort();
         sortedOrigins.forEach(origin => {
             const option = document.createElement('option');
@@ -100,7 +117,7 @@ document.addEventListener('DOMContentLoaded', function() {
             originFilter.appendChild(option);
         });
         
-        // Linguistische Kategorie Optionen
+        // Linguistische Kategorie seçenekleri
         const sortedLingCats = Array.from(uniqueLingCats).sort();
         sortedLingCats.forEach(cat => {
             const option = document.createElement('option');
@@ -109,7 +126,7 @@ document.addEventListener('DOMContentLoaded', function() {
             lingFilter.appendChild(option);
         });
         
-        // Thematische Kategorie Optionen
+        // Thematische Kategorie seçenekleri
         const sortedThemeCats = Array.from(uniqueThemeCats).sort();
         sortedThemeCats.forEach(cat => {
             const option = document.createElement('option');
@@ -126,24 +143,20 @@ document.addEventListener('DOMContentLoaded', function() {
         const selectedThemeCat = themeFilter.value;
         
         filteredEntries = allEntries.filter(entry => {
-            // Suchbegriff überprüfen
             const matchesSearch = 
                 !searchTerm || 
-                (entry['Stichwort'] && entry['Stichwort'].toLowerCase().includes(searchTerm)) || 
-                (entry['Inhalt'] && entry['Inhalt'].toLowerCase().includes(searchTerm));
+                (entry['Arabisches Wort'] && entry['Arabisches Wort'].toLowerCase().includes(searchTerm)) || 
+                (entry['Bedeutung (Deutsch)'] && entry['Bedeutung (Deutsch)'].toLowerCase().includes(searchTerm));
             
-            // Herkunftssprache überprüfen
             const matchesOrigin = 
                 !selectedOrigin || 
                 (entry['Herkunftssprache'] && entry['Herkunftssprache'] === selectedOrigin);
             
-            // Linguistische Kategorie überprüfen
             const matchesLingCat = 
                 !selectedLingCat || 
                 (entry['linguistische Kategorie'] && 
                  entry['linguistische Kategorie'].split(',').map(cat => cat.trim()).includes(selectedLingCat));
             
-            // Thematische Kategorie überprüfen
             const matchesThemeCat = 
                 !selectedThemeCat || 
                 (entry['Thematische Kategorie'] && 
@@ -181,16 +194,15 @@ document.addEventListener('DOMContentLoaded', function() {
         
         const cardHeader = document.createElement('div');
         cardHeader.className = 'card-header';
-        cardHeader.innerHTML = `<h5>${entry['Stichwort'] || 'Ohne Titel'}</h5>`;
+        cardHeader.innerHTML = `<h5>${entry['Arabisches Wort'] || 'Ohne Titel'}</h5>`;
         
         const cardBody = document.createElement('div');
         cardBody.className = 'card-body';
         
-        // Kategorie-Badges
+        // Kategorie badge'leri
         const categoriesDiv = document.createElement('div');
         categoriesDiv.className = 'mb-3';
         
-        // Herkunftssprache
         if (entry['Herkunftssprache']) {
             const originBadge = document.createElement('span');
             originBadge.className = 'badge origin-badge badge-category';
@@ -198,7 +210,6 @@ document.addEventListener('DOMContentLoaded', function() {
             categoriesDiv.appendChild(originBadge);
         }
         
-        // Linguistische Kategorie
         if (entry['linguistische Kategorie']) {
             entry['linguistische Kategorie'].split(',').forEach(cat => {
                 const lingBadge = document.createElement('span');
@@ -208,7 +219,6 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
         
-        // Thematische Kategorie
         if (entry['Thematische Kategorie']) {
             entry['Thematische Kategorie'].split(',').forEach(cat => {
                 const themeBadge = document.createElement('span');
@@ -218,14 +228,12 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
         
-        // Inhalt
         const contentDiv = document.createElement('div');
         contentDiv.className = 'entry-content';
-        contentDiv.innerHTML = entry.processedContent || 'Kein Inhalt';
+        contentDiv.innerHTML = entry.processedContent || 'Keine Inhalte verfügbar';
         
         cardBody.appendChild(categoriesDiv);
         cardBody.appendChild(contentDiv);
-        
         card.appendChild(cardHeader);
         card.appendChild(cardBody);
         col.appendChild(card);
