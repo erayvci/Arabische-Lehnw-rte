@@ -16,29 +16,35 @@ function populateFilters(data) {
     const linguistischeFilter = document.getElementById('linguistischeFilter');
     const herkunftspracheFilter = document.getElementById('herkunftspracheFilter');
 
-    const thematischeValues = [...new Set(data.map(item => item.Thematische))];
-    const linguistischeValues = [...new Set(data.map(item => item.Linguistische))];
-    const herkunftspracheValues = [...new Set(data.map(item => item.Herkunftsprache))];
+    const thematischeValues = [...new Set(data.map(item => item['Thematische Kategorie']))];
+    const linguistischeValues = [...new Set(data.map(item => item['linguistische Kategorie']))];
+    const herkunftspracheValues = [...new Set(data.map(item => item.Herkunftssprache))];
 
     thematischeValues.forEach(value => {
-        const option = document.createElement('option');
-        option.value = value;
-        option.textContent = value;
-        thematischeFilter.appendChild(option);
+        if (value) { // Boş değerleri ekleme
+            const option = document.createElement('option');
+            option.value = value;
+            option.textContent = value;
+            thematischeFilter.appendChild(option);
+        }
     });
 
     linguistischeValues.forEach(value => {
-        const option = document.createElement('option');
-        option.value = value;
-        option.textContent = value;
-        linguistischeFilter.appendChild(option);
+        if (value) {
+            const option = document.createElement('option');
+            option.value = value;
+            option.textContent = value;
+            linguistischeFilter.appendChild(option);
+        }
     });
 
     herkunftspracheValues.forEach(value => {
-        const option = document.createElement('option');
-        option.value = value;
-        option.textContent = value;
-        herkunftspracheFilter.appendChild(option);
+        if (value) {
+            const option = document.createElement('option');
+            option.value = value;
+            option.textContent = value;
+            herkunftspracheFilter.appendChild(option);
+        }
     });
 
     // Filtreleme olaylarını ekle
@@ -54,9 +60,9 @@ function filterData(data) {
     const herkunftspracheFilter = document.getElementById('herkunftspracheFilter').value;
 
     const filteredData = data.filter(item => {
-        return (!thematischeFilter || item.Thematische === thematischeFilter) &&
-               (!linguistischeFilter || item.Linguistische === linguistischeFilter) &&
-               (!herkunftspracheFilter || item.Herkunftsprache === herkunftspracheFilter);
+        return (!thematischeFilter || item['Thematische Kategorie'] === thematischeFilter) &&
+               (!linguistischeFilter || item['linguistische Kategorie'] === linguistischeFilter) &&
+               (!herkunftspracheFilter || item.Herkunftssprache === herkunftspracheFilter);
     });
 
     displayData(filteredData);
@@ -71,10 +77,16 @@ function displayData(data) {
         const card = document.createElement('div');
         card.className = 'card';
         card.innerHTML = `
-            <h2>${item.Entry}</h2>
-            <p><strong>Thematische:</strong> ${item.Thematische}</p>
-            <p><strong>Linguistische:</strong> ${item.Linguistische}</p>
-            <p><strong>Herkunftsprache:</strong> ${item.Herkunftsprache}</p>
+            <h2>${item['Arabisches Wort'] || 'N/A'}</h2>
+            <p><strong>Transkription:</strong> ${item.Transkription || 'N/A'}</p>
+            <p><strong>IPA:</strong> ${item.IPA || 'N/A'}</p>
+            <p><strong>Bedeutung (Deutsch):</strong> ${item['Bedeutung (Deutsch)'] || 'N/A'}</p>
+            <p><strong>Herkunftssprache:</strong> ${item.Herkunftssprache || 'N/A'}</p>
+            <p><strong>Originalwort:</strong> ${item.Originalwort || 'N/A'}</p>
+            <p><strong>Übernahmepfad:</strong> ${item.Übernahmepfad || 'N/A'}</p>
+            <p><strong>Historischer Kontext:</strong> ${item['Historischer Kontext'] || 'N/A'}</p>
+            <p><strong>Linguistische Kategorie:</strong> ${item['linguistische Kategorie'] || 'N/A'}</p>
+            <p><strong>Thematische Kategorie:</strong> ${item['Thematische Kategorie'] || 'N/A'}</p>
         `;
         container.appendChild(card);
     });
