@@ -1,0 +1,56 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.arabic-word {
+    font-weight: bold;
+    font-size: 1.2em;
+    color: #0d6efd;
+}
+
+.entry-card {
+    transition: transform 0.2s, box-shadow 0.2s;
+    height: 100%;
+}
+
+.entry-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+}
+
+.card-header {
+    font-weight: bold;
+}
+
+.badge-category {
+    font-size: 0.8em;
+    margin-right: 5px;
+    margin-bottom: 5px;
+}
+
+.origin-badge {
+    background-color: #6c757d;
+}
+
+.ling-badge {
+    background-color: #198754;
+}
+
+.theme-badge {
+    background-color: #fd7e14;
+}
+
+#entriesContainer {
+    gap: 1rem;
+}
+
+.entry-content {
+    white-space: pre-line;
+}
+
+@media (max-width: 768px) {
+    .arabic-word {
+        font-size: 1.1em;
+    }
+}
