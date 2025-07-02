@@ -1,24 +1,23 @@
 
-
 // Sheetbest API URL’sini buraya yapıştır (DEINE_API_ID kısmını kendi API ID’nle değiştir)
 const apiUrl = 'https://api.sheetbest.com/sheets/e21cc39a-5fe1-4d31-8702-dbc1f89b285a';
 
 // Dil ve koordinat eşleştirmesi
 const languageCoordinates = {
-    "Yunanca": [37.9838, 23.7275], // Atina, Yunanistan
-    "Latin": [41.9028, 12.4964], // Roma, İtalya
-    "Eski Etopyaca": [9.0320, 38.7578], // Addis Ababa, Etiyopya
-    "Farsça": [35.6892, 51.3890], // Tahran, İran
-    "İspanyolca": [40.4168, -3.7038], // Madrid, İspanya
-    "İtalyanca": [43.7696, 11.2558], // Floransa, İtalya
+    "Griechisch": [37.9838, 23.7275], // Atina, Yunanistan
+    "Latein": [41.9028, 12.4964], // Roma, İtalya
+    "Altäthiopischa": [9.0320, 38.7578], // Addis Ababa, Etiyopya
+    "Persisch": [35.6892, 51.3890], // Tahran, İran
+    "Spanisch": [40.4168, -3.7038], // Madrid, İspanya
+    "Italienisch": [43.7696, 11.2558], // Floransa, İtalya
     "Sanskrit": [25.3176, 82.9739], // Varanasi, Hindistan
     "Tamil": [13.0827, 80.2707], // Chennai, Hindistan
-    "Fransızca": [48.8566, 2.3522], // Paris, Fransa
-    "İngilizce": [51.505, -0.09], // Londra, İngiltere
-    "Hintçe": [28.7041, 77.1025], // Delhi, Hindistan
-    "Süryanice": [33.5138, 36.2765], // Şam, Suriye
-    "Aramice": [36.3418, 43.1300], // Musul, Irak
-    "Türkçe": [41.0082, 28.9784] // İstanbul, Türkiye
+    "Französisch": [48.8566, 2.3522], // Paris, Fransa
+    "Englische": [51.505, -0.09], // Londra, İngiltere
+    "Hindi": [28.7041, 77.1025], // Delhi, Hindistan
+    "Syrisch": [33.5138, 36.2765], // Şam, Suriye
+    "Aramäisch": [36.3418, 43.1300], // Musul, Irak
+    "Türkisch": [41.0082, 28.9784] // İstanbul, Türkiye
 };
 
 // Verileri çek ve sayfayı başlat
@@ -33,12 +32,11 @@ fetch(apiUrl)
 
 // Haritayı başlat
 function initializeMap(data) {
-    const map = L.map('map').setView([20, 0], 2); // Dünya geneli, zoom seviyesi 2
+    const map = L.map('map').setView([20, 0], 2);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
-    // Herkunftssprache’ye göre işaretleyiciler ekle (Hebrew hariç)
     data.forEach(item => {
         const language = item.Herkunftssprache;
         if (language && language !== "Hebrew" && languageCoordinates[language]) {
@@ -91,7 +89,6 @@ function populateFilters(data) {
         }
     });
 
-    // Filtreleme olaylarını ekle
     thematischeFilter.addEventListener('change', () => filterData(data));
     linguistischeFilter.addEventListener('change', () => filterData(data));
     herkunftspracheFilter.addEventListener('change', () => filterData(data));
@@ -110,7 +107,7 @@ function filterData(data) {
     });
 
     displayData(filteredData);
-    updateMap(filteredData); // Haritayı güncelle
+    updateMap(filteredData);
 }
 
 // Verileri kartlar halinde göster
