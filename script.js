@@ -1,4 +1,5 @@
 
+
 // Sheetbest API URL’sini buraya yapıştır (DEINE_API_ID kısmını kendi API ID’nle değiştir)
 const apiUrl = 'https://api.sheetbest.com/sheets/e21cc39a-5fe1-4d31-8702-dbc1f89b285a';
 
