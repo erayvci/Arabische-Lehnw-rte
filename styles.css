@@ -1,203 +1,71 @@
-:root {
-    --primary-color: #2c3e50;
-    --secondary-color: #34495e;
-    --accent-color: #e74c3c;
-    --light-color: #ecf0f1;
-    --dark-color: #2c3e50;
-}
-
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    color: #333;
-    line-height: 1.6;
-    background-color: #f9f9f9;
-}
-
-.header {
-    background-color: var(--primary-color);
-    color: white;
-    padding: 2rem 0;
-    margin-bottom: 2rem;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-}
-
-.site-title {
-    font-weight: 700;
-    font-size: 2.2rem;
-    margin-bottom: 0.5rem;
-}
-
-.site-subtitle {
-    font-size: 1.1rem;
-    opacity: 0.9;
-}
-
-.main-container {
-    padding-bottom: 3rem;
-}
-
-.sidebar {
-    background-color: white;
-    padding: 1.5rem;
-    border-radius: 5px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    margin-bottom: 2rem;
-}
-
-.search-box {
-    display: flex;
-    margin-bottom: 1.5rem;
-}
-
-.search-box input {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-}
-
-.search-box button {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-}
-
-.filter-section {
-    margin-top: 1.5rem;
-}
-
-.filter-section h3 {
-    font-size: 1.2rem;
-    margin-bottom: 1rem;
-    color: var(--dark-color);
-    border-bottom: 1px solid #eee;
-    padding-bottom: 0.5rem;
-}
-
-.filter-group {
-    margin-bottom: 1rem;
-}
-
-.filter-group label {
-    display: block;
-    margin-bottom: 0.3rem;
-    font-weight: 500;
-}
-
-.content-area {
-    padding-left: 2rem;
-}
-
-.results-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 1.5rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid #eee;
-}
-
-.results-header h2 {
-    font-size: 1.5rem;
+    font-family: Arial, sans-serif;
+    background-color: #1a1a1a;
+    color: #fff;
     margin: 0;
+    padding: 20px;
 }
 
-.entries-list {
-    background-color: white;
+header {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h1 {
+    color: #ffc107;
+    font-size: 2.5em;
+}
+
+.filters {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+select {
+    padding: 10px;
+    font-size: 1em;
+    border: 2px solid #ffc107;
+    background-color: #333;
+    color: #fff;
     border-radius: 5px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    cursor: pointer;
 }
 
-.entry-item {
-    padding: 1.5rem;
-    border-bottom: 1px solid #eee;
-    transition: background-color 0.2s;
+select:focus {
+    outline: none;
+    border-color: #ffca28;
 }
 
-.entry-item:hover {
-    background-color: #f8f9fa;
-}
-
-.entry-header {
+#dataContainer {
     display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    margin-bottom: 0.5rem;
-}
-
-.entry-title {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: var(--primary-color);
-    margin: 0;
-}
-
-.arabic-word {
-    font-weight: bold;
-    color: var(--accent-color);
-    font-size: 1.1em;
-}
-
-.entry-meta {
-    display: flex;
-    gap: 0.8rem;
-    margin-bottom: 0.8rem;
     flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
 }
 
-.meta-item {
-    font-size: 0.85rem;
-    background-color: #f0f0f0;
-    padding: 0.2rem 0.6rem;
-    border-radius: 3px;
-    color: #555;
+.card {
+    background-color: #333;
+    border: 2px solid #ffc107;
+    border-radius: 10px;
+    padding: 20px;
+    width: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    transition: transform 0.2s;
 }
 
-.entry-content {
-    margin-top: 1rem;
+.card:hover {
+    transform: scale(1.05);
 }
 
-.entry-content p {
-    margin-bottom: 0.5rem;
+.card h2 {
+    font-size: 1.8em;
+    color: #ffc107;
+    margin: 0 0 10px;
 }
 
-.entry-content strong {
-    color: var(--dark-color);
-}
-
-.loading-indicator {
-    text-align: center;
-    padding: 3rem;
-    color: #666;
-}
-
-.no-results {
-    text-align: center;
-    padding: 3rem;
-    color: #666;
-}
-
-.no-results i {
-    margin-bottom: 1rem;
-    color: #ddd;
-}
-
-.footer {
-    background-color: var(--dark-color);
-    color: white;
-    padding: 1.5rem 0;
-    text-align: center;
-    font-size: 0.9rem;
-}
-
-@media (max-width: 768px) {
-    .content-area {
-        padding-left: 15px;
-    }
-    
-    .entry-header {
-        flex-direction: column;
-        align-items: flex-start;
-    }
-    
-    .entry-title {
-        margin-bottom: 0.3rem;
-    }
+.card p {
+    margin: 5px 0;
+    font-size: 1em;
 }
