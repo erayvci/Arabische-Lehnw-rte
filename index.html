@@ -3,91 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Arabisches Lehnwörterbuch</title>
+    <title>Arabisches Etymologisches Lexikon</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header class="bg-primary text-white py-4">
+    <header class="header">
         <div class="container">
-            <h1 class="text-center">Arabisches Lehnwörterbuch</h1>
-            <p class="text-center">Arabische Lehnwörter im Deutschen und ihre Herkunft</p>
+            <h1 class="site-title">Arabisches Etymologisches Lexikon</h1>
+            <p class="site-subtitle">Etymologie und Geschichte arabischer Lehnwörter</p>
         </div>
     </header>
 
-    <div class="container mt-4">
+    <div class="container main-container">
         <div class="row">
-            <div class="col-md-3">
-                <div class="card mb-4">
-                    <div class="card-header bg-secondary text-white">
-                        <h5 class="mb-0">Filter</h5>
+            <div class="col-md-3 sidebar">
+                <div class="search-box">
+                    <input type="text" id="searchInput" placeholder="Wort suchen..." class="form-control">
+                    <button id="searchButton" class="btn btn-primary"><i class="fas fa-search"></i></button>
+                </div>
+
+                <div class="filter-section">
+                    <h3>Filter</h3>
+                    <div class="filter-group">
+                        <label for="originFilter">Herkunftssprache</label>
+                        <select id="originFilter" class="form-select">
+                            <option value="">Alle</option>
+                        </select>
                     </div>
-                    <div class="card-body">
-                        <div class="mb-3">
-                            <label for="searchInput" class="form-label">Wort suchen</label>
-                            <input type="text" class="form-control" id="searchInput" placeholder="Wort suchen...">
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="originFilter" class="form-label">Herkunftssprache</label>
-                            <select class="form-select" id="originFilter">
-                                <option value="">Alle</option>
-                                <!-- Wird dynamisch gefüllt -->
-                            </select>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="lingFilter" class="form-label">Linguistische Kategorie</label>
-                            <select class="form-select" id="lingFilter">
-                                <option value="">Alle</option>
-                                <!-- Wird dynamisch gefüllt -->
-                            </select>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="themeFilter" class="form-label">Thematische Kategorie</label>
-                            <select class="form-select" id="themeFilter">
-                                <option value="">Alle</option>
-                                <!-- Wird dynamisch gefüllt -->
-                            </select>
-                        </div>
-                        
-                        <button id="resetFilters" class="btn btn-outline-secondary w-100">Filter zurücksetzen</button>
+                    
+                    <div class="filter-group">
+                        <label for="lingFilter">Linguistische Kategorie</label>
+                        <select id="lingFilter" class="form-select">
+                            <option value="">Alle</option>
+                        </select>
                     </div>
+                    
+                    <div class="filter-group">
+                        <label for="themeFilter">Thematische Kategorie</label>
+                        <select id="themeFilter" class="form-select">
+                            <option value="">Alle</option>
+                        </select>
+                    </div>
+                    
+                    <button id="resetFilters" class="btn btn-outline-secondary">Filter zurücksetzen</button>
                 </div>
             </div>
-            
-            <div class="col-md-9">
-                <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h2>Wörterliste</h2>
-                    <div id="resultCount" class="badge bg-primary"></div>
+
+            <div class="col-md-9 content-area">
+                <div class="results-header">
+                    <h2>Suchergebnisse</h2>
+                    <div id="resultCount" class="badge bg-primary">0 Einträge</div>
                 </div>
-                
-                <div id="loading" class="text-center my-5">
-                    <div class="spinner-border text-primary" role="status">
-                        <span class="visually-hidden">Laden...</span>
-                    </div>
-                    <p class="mt-2">Daten werden geladen...</p>
+
+                <div id="loading" class="loading-indicator">
+                    <div class="spinner-border text-primary" role="status"></div>
+                    <p>Daten werden geladen...</p>
                 </div>
-                
-                <div id="entriesContainer" class="row">
-                    <!-- Wird dynamisch gefüllt -->
+
+                <div id="entriesContainer" class="entries-list">
+                    <!-- Einträge werden hier dynamisch eingefügt -->
                 </div>
-                
-                <div id="noResults" class="text-center py-5 d-none">
-                    <i class="fas fa-search fa-3x mb-3 text-muted"></i>
-                    <h4>Keine Ergebnisse gefunden</h4>
-                    <p class="text-muted">Es wurden keine Wörter gefunden, die Ihren Filterkriterien entsprechen.</p>
+
+                <div id="noResults" class="no-results">
+                    <i class="fas fa-search fa-3x"></i>
+                    <h3>Keine Ergebnisse gefunden</h3>
+                    <p>Ihre Suchkriterien haben keine Übereinstimmungen ergeben.</p>
                 </div>
             </div>
         </div>
     </div>
 
-    <footer class="bg-dark text-white py-4 mt-5">
-        <div class="container text-center">
-            <p>© 2025 Arabisches Lehnwörterbuch - Alle Rechte vorbehalten</p>
-            <p>Daten werden von Google Sheets über SheetBest bezogen.</p>
+    <footer class="footer">
+        <div class="container">
+            <p>© 2023 Arabisches Etymologisches Lexikon | Alle Rechte vorbehalten</p>
         </div>
     </footer>
 
