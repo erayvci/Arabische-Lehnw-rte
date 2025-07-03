@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wörterdatenbank</title>
+    <title>Wörterdatenbank!!</title>
     <link rel="stylesheet" href="styles.css">
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
@@ -12,9 +12,11 @@
     <header>
         <nav>
             <a href="index.html" class="nav-link">Startseite</a>
-            <a href="about.html" class="nav-link">Über Uns</a>
+            <button id="aboutButton" class="about-button">Über Uns</button>
         </nav>
-        <h1>Wörterdatenbank</h1>
+        <h1>Wörterdatenbank!!</h1>
+        <button id="showMapButton" class="map-button">Haritayı Göster</button>
+        <div id="map" class="map-hidden"></div>
         <div class="filters">
             <select id="thematischeFilter">
                 <option value="">Thematische Kategorie wählen</option>
@@ -23,15 +25,21 @@
                 <option value="">Linguistische Kategorie wählen</option>
             </select>
             <select id="herkunftspracheFilter">
-                <option value="">Herkunftssprache wählen</option>
+                <option value="">Herkunftsprache wählen</option>
             </select>
         </div>
     </header>
     <main>
         <div id="dataContainer"></div>
-        <h2>Wörter auf der Karte nach Herkunftssprache</h2>
-        <button id="showMapButton" class="map-button">Karte Anzeigen</button>
-        <div id="map" class="map-hidden"></div>
+        <!-- Über Uns Modal -->
+        <div id="aboutModal" class="modal">
+            <div class="modal-content">
+                <span id="closeModal" class="close">×</span>
+                <p>
+                    Diese Website wurde als Abschlussprojekt des DH-Kurses von Christian Casey während des Sommersemesters der FU Berlin entwickelt. Die Seite listet 100 Beispiele von Wörtern auf, die die arabische Sprache aus anderen Sprachen entlehnt hat. Sie können diese Wörter in verschiedene Kategorien einordnen: thematische Kategorien, grammatikalische Kategorien und Herkunftssprachen. Sie können auch den historischen Kontext jedes Wortes, seine Transkription, seinen Weg ins Arabische, sein ursprüngliches Wort, seine IPA-Schreibweise usw. auf dieser Website einsehen. Dank unserer interaktiven Karte ist es möglich zu sehen, welches Wort aus welcher Entfernung im Arabischen vorkommt, zusammen mit den von uns visualisierten Daten. Diejenigen, die zum Aufbau der Website beigetragen haben: Mehmet Eray Avcı, Ali Assfour, Johanna Israel.
+                </p>
+            </div>
+        </div>
     </main>
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
