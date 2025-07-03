@@ -35,11 +35,38 @@ nav {
     transform: translateY(-2px);
 }
 
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.logo {
+    width: 50px; /* Küçük logo */
+    height: auto;
+    margin-right: 15px; /* Başlıkla aralık */
+}
+
+.title-link {
+    text-decoration: none;
+    color: #ffca28;
+}
+
+.title-link:hover h1,
+.title-link:focus h1 {
+    color: #ffffff;
+    text-decoration: underline;
+}
+
 h1 {
     color: #ffca28;
     font-size: 2.8em;
     font-weight: 700;
     letter-spacing: 1px;
+    margin: 0;
+    cursor: pointer;
+    transition: color 0.3s;
 }
 
 h2 {
@@ -138,7 +165,7 @@ select:focus {
     font-size: 1.2em;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
-    margin: 20px 0 20px 20px; /* Sola hizalı, üstten ve alttan boşluk */
+    margin: 20px 0 20px 20px;
     display: block;
     text-align: left;
 }
@@ -157,7 +184,7 @@ select:focus {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 1000;
-    display: flex; /* Ortaya hizalamak için */
+    display: flex;
     justify-content: center;
     align-items: center;
 }
@@ -192,10 +219,20 @@ select:focus {
     color: #ffffff;
 }
 
-/* Harita popup’ları için kaydırma çubuğu */
 .leaflet-popup-content {
     max-height: 200px;
     overflow-y: auto;
+}
+
+footer {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.copyright {
+    font-size: 0.8em;
+    font-style: italic;
+    color: #ecf0f1;
 }
 
 /* Google Fonts için */
