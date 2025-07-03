@@ -20,7 +20,6 @@ const languageCoordinates = {
     "Türkisch": [41.0082, 28.9784] // İstanbul, Türkiye
 };
 
-
 // Verileri çek ve sayfayı başlat
 fetch(apiUrl)
     .then(response => response.json())
@@ -29,6 +28,7 @@ fetch(apiUrl)
         populateFilters(data);
         displayData(data);
         initializeMap(data);
+        initializeModal();
     })
     .catch(error => console.error('Fehler beim Abrufen der Daten:', error));
 
@@ -87,6 +87,27 @@ function initializeMap(data) {
     });
 }
 
+// Über Uns modalını başlat
+function initializeModal() {
+    const aboutButton = document.getElementById('aboutButton');
+    const aboutModal = document.getElementById('aboutModal');
+    const closeModal = document.getElementById('closeModal');
+
+    aboutButton.addEventListener('click', () => {
+        aboutModal.style.display = 'flex';
+    });
+
+    closeModal.addEventListener('click', () => {
+        aboutModal.style.display = 'none';
+    });
+
+    window.addEventListener('click', (event) => {
+        if (event.target === aboutModal) {
+            aboutModal.style.display = 'none';
+        }
+    });
+}
+
 // Filtre menülerini doldur
 function populateFilters(data) {
     const thematischeFilter = document.getElementById('thematischeFilter');
@@ -124,7 +145,7 @@ function populateFilters(data) {
         }
     });
 
-    // URL’den filtreyi oku (örneğin, ?herkunftsprache=Türkçe)
+    // URL’den filtreyi oku
     const urlParams = new URLSearchParams(window.location.search);
     const herkunftsprache = urlParams.get('herkunftsprache');
     if (herkunftsprache) {
