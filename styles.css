@@ -138,8 +138,9 @@ select:focus {
     font-size: 1.2em;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
-    margin: 20px auto; /* Üstten daha fazla boşluk */
+    margin: 20px 0 20px 20px; /* Sola hizalı, üstten ve alttan boşluk */
     display: block;
+    text-align: left;
 }
 
 .map-button:hover {
@@ -156,6 +157,9 @@ select:focus {
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 1000;
+    display: flex; /* Ortaya hizalamak için */
+    justify-content: center;
+    align-items: center;
 }
 
 .modal-content {
@@ -167,9 +171,6 @@ select:focus {
     max-height: 80vh;
     overflow-y: auto;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
-    position: fixed;
-    top: 20px;
-    right: 20px; /* Sağ üst köşeye hizala */
 }
 
 .modal-content p {
@@ -189,6 +190,12 @@ select:focus {
 
 .close:hover {
     color: #ffffff;
+}
+
+/* Harita popup’ları için kaydırma çubuğu */
+.leaflet-popup-content {
+    max-height: 200px;
+    overflow-y: auto;
 }
 
 /* Google Fonts için */
