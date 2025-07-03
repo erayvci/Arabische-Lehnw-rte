@@ -30,10 +30,14 @@ fetch(apiUrl)
         initializeMap(data);
         initializeModal();
     })
-    .catch(error => console.error('Fehler beim Abrufen der Daten:', error));
+    .catch(error => {
+        console.error('Fehler beim Abrufen der Daten:', error);
+        alert('Daten konnten nicht geladen werden. Bitte überprüfen Sie die API-URL.');
+    });
 
 // Haritayı başlat
 function initializeMap(data) {
+    const mapContainer = document.getElementById('map');
     const map = L.map('map').setView([20, 0], 2);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -74,7 +78,6 @@ function initializeMap(data) {
 
     // Haritayı göster/gizle butonu
     const showMapButton = document.getElementById('showMapButton');
-    const mapContainer = document.getElementById('map');
     showMapButton.addEventListener('click', () => {
         if (mapContainer.classList.contains('map-hidden')) {
             mapContainer.classList.remove('map-hidden');
@@ -93,19 +96,23 @@ function initializeModal() {
     const aboutModal = document.getElementById('aboutModal');
     const closeModal = document.getElementById('closeModal');
 
-    aboutButton.addEventListener('click', () => {
-        aboutModal.style.display = 'flex';
-    });
+    if (aboutButton && aboutModal && closeModal) {
+        aboutButton.addEventListener('click', () => {
+            aboutModal.style.display = 'flex';
+        });
 
-    closeModal.addEventListener('click', () => {
-        aboutModal.style.display = 'none';
-    });
-
-    window.addEventListener('click', (event) => {
-        if (event.target === aboutModal) {
+        closeModal.addEventListener('click', () => {
             aboutModal.style.display = 'none';
-        }
-    });
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target === aboutModal) {
+                aboutModal.style.display = 'none';
+            }
+        });
+    } else {
+        console.error('Modal elemanları bulunamadı:', { aboutButton, aboutModal, closeModal });
+    }
 }
 
 // Filtre menülerini doldur
@@ -113,6 +120,11 @@ function populateFilters(data) {
     const thematischeFilter = document.getElementById('thematischeFilter');
     const linguistischeFilter = document.getElementById('linguistischeFilter');
     const herkunftspracheFilter = document.getElementById('herkunftspracheFilter');
+
+    if (!thematischeFilter || !linguistischeFilter || !herkunftspracheFilter) {
+        console.error('Filtre elemanları bulunamadı');
+        return;
+    }
 
     const thematischeValues = [...new Set(data.map(item => item['Thematische Kategorie']))];
     const linguistischeValues = [...new Set(data.map(item => item['linguistische Kategorie']))];
@@ -177,6 +189,10 @@ function filterData(data) {
 // Verileri kartlar halinde göster
 function displayData(data) {
     const container = document.getElementById('dataContainer');
+    if (!container) {
+        console.error('dataContainer bulunamadı');
+        return;
+    }
     container.innerHTML = '';
 
     data.forEach(item => {
