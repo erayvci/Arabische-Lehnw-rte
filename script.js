@@ -18,8 +18,6 @@ const languageCoordinates = {
     "Syrisch": [33.5138, 36.2765], // Şam, Suriye
     "Aramäisch": [36.3418, 43.1300], // Musul, Irak
     "Türkisch": [41.0082, 28.9784] // İstanbul, Türkiye
-    "Hebrewisch": [32.965833, 35.498333], // Safed
-
 };
 
 // Verileri çek ve sayfayı başlat
