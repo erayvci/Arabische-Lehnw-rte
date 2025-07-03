@@ -20,7 +20,6 @@ const languageCoordinates = {
     "Türkisch": [41.0082, 28.9784] // İstanbul, Türkiye
 };
 
-
 // Verileri çek ve sayfayı başlat
 fetch(apiUrl)
     .then(response => response.json())
