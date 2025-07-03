@@ -111,9 +111,32 @@ select:focus {
 }
 
 #map {
+    height: 400px;
     border-radius: 12px;
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
     z-index: 1;
+}
+
+.map-hidden {
+    display: none;
+}
+
+.map-button {
+    background-color: #ffca28;
+    color: #1c2526;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    margin: 10px auto;
+    display: block;
+}
+
+.map-button:hover {
+    background-color: #ffffff;
+    transform: translateY(-2px);
 }
 
 .about-button {
@@ -125,6 +148,8 @@ select:focus {
     font-size: 1.2em;
     cursor: pointer;
     transition: background-color 0.3s, transform 0.2s;
+    margin: 10px auto;
+    display: block;
 }
 
 .about-button:hover {
