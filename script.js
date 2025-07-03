@@ -13,17 +13,19 @@ const languageCoordinates = {
     "Sanskrit": [25.3176, 82.9739], // Varanasi, Hindistan
     "Tamil": [13.0827, 80.2707], // Chennai, Hindistan
     "Französisch": [48.8566, 2.3522], // Paris, Fransa
-    "Englische": [51.505, -0.09], // Londra, İngiltere
+    "Englisch": [51.505, -0.09], // Londra, İngiltere
     "Hindi": [28.7041, 77.1025], // Delhi, Hindistan
     "Syrisch": [33.5138, 36.2765], // Şam, Suriye
     "Aramäisch": [36.3418, 43.1300], // Musul, Irak
     "Türkisch": [41.0082, 28.9784] // İstanbul, Türkiye
 };
 
+
 // Verileri çek ve sayfayı başlat
 fetch(apiUrl)
     .then(response => response.json())
     .then(data => {
+        window.globalData = data; // Verileri global olarak sakla
         populateFilters(data);
         displayData(data);
         initializeMap(data);
@@ -37,17 +39,50 @@ function initializeMap(data) {
         attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
+    // Her dil için kelimeleri grupla
+    const languageWords = {};
     data.forEach(item => {
         const language = item.Herkunftssprache;
         if (language && language !== "Hebrew" && languageCoordinates[language]) {
-            const [lat, lng] = languageCoordinates[language];
-            const marker = L.marker([lat, lng]).addTo(map);
-            marker.bindPopup(`
-                <b>${item['Arabisches Wort'] || 'N/A'}</b><br>
-                Bedeutung: ${item['Bedeutung (Deutsch)'] || 'N/A'}<br>
-                Transkription: ${item.Transkription || 'N/A'}<br>
-                Herkunftssprache: ${item.Herkunftssprache || 'N/A'}
-            `);
+            if (!languageWords[language]) {
+                languageWords[language] = [];
+            }
+            languageWords[language].push(item);
+        }
+    });
+
+    // Her dil için tek bir işaretleyici ekle
+    Object.keys(languageWords).forEach(language => {
+        const words = languageWords[language];
+        const [lat, lng] = languageCoordinates[language];
+        const marker = L.marker([lat, lng]).addTo(map);
+        const popupContent = `
+            <b>${language}</b><br>
+            <ul>
+                ${words.map(item => `
+                    <li>
+                        <b>${item['Arabisches Wort'] || 'N/A'}</b><br>
+                        Bedeutung: ${item['Bedeutung (Deutsch)'] || 'N/A'}<br>
+                        Transkription: ${item.Transkription || 'N/A'}
+                    </li>
+                `).join('')}
+            </ul>
+            <a href="index.html?herkunftsprache=${encodeURIComponent(language)}" target="_blank">Alle Wörter dieser Sprache anzeigen</a>
+        `;
+        marker.bindPopup(popupContent);
+    });
+
+    // Haritayı göster/gizle butonu
+    const showMapButton = document.getElementById('showMapButton');
+    const mapContainer = document.getElementById('map');
+    showMapButton.addEventListener('click', () => {
+        if (mapContainer.classList.contains('map-hidden')) {
+            mapContainer.classList.remove('map-hidden');
+            showMapButton.textContent = 'Haritayı Gizle';
+            map.invalidateSize(); // Harita boyutunu güncelle
+        } else {
+            mapContainer.classList.add('map-hidden');
+            showMapButton.textContent = 'Haritayı Göster';
         }
     });
 }
@@ -88,6 +123,14 @@ function populateFilters(data) {
             herkunftspracheFilter.appendChild(option);
         }
     });
+
+    // URL’den filtreyi oku (örneğin, ?herkunftsprache=Türkçe)
+    const urlParams = new URLSearchParams(window.location.search);
+    const herkunftsprache = urlParams.get('herkunftsprache');
+    if (herkunftsprache) {
+        herkunftspracheFilter.value = herkunftsprache;
+        filterData(data);
+    }
 
     thematischeFilter.addEventListener('change', () => filterData(data));
     linguistischeFilter.addEventListener('change', () => filterData(data));
@@ -136,22 +179,48 @@ function displayData(data) {
 
 // Haritayı filtreye göre güncelle
 function updateMap(data) {
+    const mapContainer = document.getElementById('map');
+    mapContainer.innerHTML = ''; // Eski haritayı temizle
     const map = L.map('map').setView([20, 0], 2);
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
 
+    // Her dil için kelimeleri grupla
+    const languageWords = {};
     data.forEach(item => {
         const language = item.Herkunftssprache;
         if (language && language !== "Hebrew" && languageCoordinates[language]) {
-            const [lat, lng] = languageCoordinates[language];
-            const marker = L.marker([lat, lng]).addTo(map);
-            marker.bindPopup(`
-                <b>${item['Arabisches Wort'] || 'N/A'}</b><br>
-                Bedeutung: ${item['Bedeutung (Deutsch)'] || 'N/A'}<br>
-                Transkription: ${item.Transkription || 'N/A'}<br>
-                Herkunftssprache: ${item.Herkunftssprache || 'N/A'}
-            `);
+            if (!languageWords[language]) {
+                languageWords[language] = [];
+            }
+            languageWords[language].push(item);
         }
     });
+
+    // Her dil için tek bir işaretleyici ekle
+    Object.keys(languageWords).forEach(language => {
+        const words = languageWords[language];
+        const [lat, lng] = languageCoordinates[language];
+        const marker = L.marker([lat, lng]).addTo(map);
+        const popupContent = `
+            <b>${language}</b><br>
+            <ul>
+                ${words.map(item => `
+                    <li>
+                        <b>${item['Arabisches Wort'] || 'N/A'}</b><br>
+                        Bedeutung: ${item['Bedeutung (Deutsch)'] || 'N/A'}<br>
+                        Transkription: ${item.Transkription || 'N/A'}
+                    </li>
+                `).join('')}
+            </ul>
+            <a href="index.html?herkunftsprache=${encodeURIComponent(language)}" target="_blank">Alle Wörter dieser Sprache anzeigen</a>
+        `;
+        marker.bindPopup(popupContent);
+    });
+
+    // Harita görünüyorsa boyutunu güncelle
+    if (!mapContainer.classList.contains('map-hidden')) {
+        map.invalidateSize();
+    }
 }
