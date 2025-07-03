@@ -20,6 +20,7 @@ const languageCoordinates = {
     "Türkisch": [41.0082, 28.9784] // İstanbul, Türkiye
 };
 
+
 // Verileri çek ve sayfayı başlat
 fetch(apiUrl)
     .then(response => response.json())
@@ -29,6 +30,14 @@ fetch(apiUrl)
         displayData(data);
         initializeMap(data);
         initializeModal();
+
+        // URL’den filtreyi uygula
+        const urlParams = new URLSearchParams(window.location.search);
+        const herkunftsprache = urlParams.get('herkunftsprache');
+        if (herkunftsprache) {
+            document.getElementById('herkunftspracheFilter').value = herkunftsprache;
+            filterData(data);
+        }
     })
     .catch(error => {
         console.error('Fehler beim Abrufen der Daten:', error);
@@ -81,11 +90,11 @@ function initializeMap(data) {
     showMapButton.addEventListener('click', () => {
         if (mapContainer.classList.contains('map-hidden')) {
             mapContainer.classList.remove('map-hidden');
-            showMapButton.textContent = 'Haritayı Gizle';
+            showMapButton.textContent = 'Weltkarte ausblenden';
             map.invalidateSize(); // Harita boyutunu güncelle
         } else {
             mapContainer.classList.add('map-hidden');
-            showMapButton.textContent = 'Haritayı Göster';
+            showMapButton.textContent = 'Weltkarte anzeigen';
         }
     });
 }
@@ -156,14 +165,6 @@ function populateFilters(data) {
             herkunftspracheFilter.appendChild(option);
         }
     });
-
-    // URL’den filtreyi oku
-    const urlParams = new URLSearchParams(window.location.search);
-    const herkunftsprache = urlParams.get('herkunftsprache');
-    if (herkunftsprache) {
-        herkunftspracheFilter.value = herkunftsprache;
-        filterData(data);
-    }
 
     thematischeFilter.addEventListener('change', () => filterData(data));
     linguistischeFilter.addEventListener('change', () => filterData(data));
